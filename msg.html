@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Remote</title>
+    <style>
+     /* Add styles for the button element */
+
+
+
+/* Add styles for the container element */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+
+
+/* Add styles for the button container */
+/* Add styles for the button element */
+button {
+  margin: 0;
+  padding: 20px;
+  font-size: 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 200px; /* increase the width of each button */
+  height: 100px; /* increase the height of each button */
+}
+
+/* Add styles for the button container */
+#button-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+  justify-items: center;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+  margin-top: 20px; /* add some margin to the top of the button container */
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Remote</h1>
+      <!-- Add an "Add Channel" button to prompt the user for a YouTube video URL -->
+      <button onclick="addChannel()">Add Channel</button>
+      <!-- Add a container for the numbered buttons -->
+      <div class="button-container" id="button-container"></div>
+    </div>
+    <script>
+      // Initialize an empty array to store the YouTube video links
+      let channels = [];
+
+      // Get the container element for the numbered buttons
+      const buttonContainer = document.getElementById("button-container");
+
+      // Function to prompt the user for a YouTube video URL and add a numbered button to the screen
+      function addChannel() {
+        // Prompt the user for a YouTube video URL
+        const channelUrl = prompt("Enter a YouTube video URL:");
+
+        // Add the channel URL to the array of channels
+        channels.push(channelUrl);
+
+        // Generate a button with a number as the name
+        const button = document.createElement("button");
+        button.innerText = channels.length.toString();
+        button.onclick = function() {
+          // Get the index of the clicked button
+          const index = parseInt(button.innerText) - 1;
+
+          // Redirect to the Display page with the corresponding video ID
+          
+             var message = getYoutubeVideoId(channels[index])
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          //alert("Message updated successfully!");
+        }
+      };
+      xhttp.open("POST", "update.php", true);
+      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhttp.send("message=" + message);
+        };
+
+        // Add the button to the container
+        buttonContainer.appendChild(button);
+      }
+
+      // Function to extract the YouTube video ID from a URL
+      function getYoutubeVideoId(url) {
+        var videoId = url.split("v=")[1];
+        console.log(videoId);
+        if(videoId==null)
+        {
+            videoId = url.split("e/")[1];
+        }
+        const ampersandPosition = videoId.indexOf("&");
+        if (ampersandPosition !== -1) {
+          return videoId.substring(0, ampersandPosition);
+        } else {
+          return videoId;
+        }
+      }
+    </script>
+  </body>
+</html>

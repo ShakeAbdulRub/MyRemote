@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Display</title>
+    <style>
+      /* Add styles for the container element */
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background-color: #f2f2f2;
+      }
+
+      /* Add styles for the frame element */
+      iframe {
+        width: 80%;
+        height: 80%;
+        border: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Display</h1>
+      <!-- Add an iframe to play the YouTube video -->
+      <iframe id="video-player" src="" allowfullscreen></iframe>
+    </div>
+    <script>
+      // Get the video player element
+      const videoPlayer = document.getElementById("video-player");
+
+      // Get the URL parameter containing the YouTube video ID
+      const params = new URLSearchParams(window.location.search);
+      var videoId = params.get("id");
+
+      function updateVideoPlayer() {
+       var xhttp = new XMLHttpRequest();
+       xhttp.onreadystatechange = function() {
+         if (this.readyState == 4 && this.status == 200) {
+            videoId = this.responseText;
+            //console.log(videoId);
+           //videoId ='<?php echo $message; ?>'
+            temp= "https://www.youtube.com/embed/" + videoId+"?autoplay=1&mute=0";
+            if(temp!=videoPlayer.src){
+            videoPlayer.src = "https://www.youtube.com/embed/" + videoId+"?autoplay=1&mute=0";
+            }
+          }
+       };
+        xhttp.open("GET", "file1.txt", true);
+        xhttp.send();
+      }
+
+      // Call updateVideoPlayer() every 5 seconds
+     setInterval(updateVideoPlayer, 2000);
+       
+      // Update the video player source with the initial video ID
+     videoPlayer.src = "https://www.youtube.com/embed/" + videoId;
+    </script>
+  </body>
+</html>
